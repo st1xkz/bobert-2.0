@@ -20,7 +20,7 @@ class Ticket(commands.Cog):
             lines = await file.readlines()
             for line in lines:
                 data = line.split(" ")
-                self.client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
+                self.client.ticket_configs[int(data[0])] = [int(data[1]) + int(data[2]) + int(data[3])]
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):

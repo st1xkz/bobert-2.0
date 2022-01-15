@@ -153,18 +153,6 @@ async def rules(ctx):
 
 @client.command()
 @commands.is_owner()
-async def sh(ctx):
-    embed = discord.Embed(
-        title="↬ 𝐬𝐡𝐚𝐝𝐞𝐬",
-        description="<:White:901352252642574347> ― <@&927804430299054092>\n<:Grey:901354633392455741> ― <@&927804691537068063>\n<:Black:901352586446241833> ― <@&927804895740952576>",
-        color=0x000100
-    )
-    embed.set_image(url="https://cdn.discordapp.com/attachments/900458968588120154/922992408860438608/shades1.png")
-    await ctx.send(embed=embed)
-
-
-@client.command()
-@commands.is_owner()
 async def cl(ctx):
     embed = discord.Embed(
         title="↬ 𝐜𝐥𝐚𝐬𝐬𝐢𝐜𝐬",
