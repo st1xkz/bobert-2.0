@@ -178,10 +178,10 @@ async def nn(ctx):
     )
     await ctx.send(embed=embed)
 
-for filename in os.listdir("./Cogs"): 
+for filename in os.listdir("./cogs"): 
     if filename.endswith(".py"):
-        client.load_extension(f"Cogs.{filename[:-3]}")
-    (f"Cogs.{filename[:-3]}")
+        client.load_extension(f"cogs.{filename[:-3]}")
+    (f"cogs.{filename[:-3]}")
     
 keep_alive()
 client.run(my_secret)
