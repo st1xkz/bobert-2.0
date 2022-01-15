@@ -74,7 +74,7 @@ async def rules(ctx):
     
     embed = discord.Embed(
         title="📌 Advertising",
-        description=">>> • Advertisements are not allowed. Do **__not__** promote your YouTube channel(s), Discord server(s), Twitch, or any other social media (Partners exempted. For more info regarding Partners, please refer to <#809215806323163136> and check the pins).",
+        description=">>> • Advertisements are not allowed. Do **__not__** promote your YouTube channel(s), Discord server(s), Twitch, or any other social media in this server or in DMs (Partners exempted. For more info regarding Partners, please refer to <#809215806323163136> and check the pins).",
         color=0xd9c2ae
     )
     await ctx.send(embed=embed)
@@ -144,7 +144,7 @@ async def rules(ctx):
     await ctx.send(embed=embed)
 
     embed = discord.Embed(
-        description=f"Not having read the rules will lead to punishment, and is no excuse.\n\nMisbehaving, rule-avoiding, and loopholing will lead to punishment. Punishments in this server vary from action to action. Once you've agreed with the rules, type *+agree* in the appropriate channel but, **__try to evade them and you will not succeed.__**\n\n**__Privacy Notice__**\n\nBy speaking and remaining a member of this server, you acknowledge our tracking on some on your actions, such as message deletions, edits, and voice channel activity to aid in the moderation of this place. All this data is collected by an external service (<@242730576195354624>) which stores the information securely.\n\n**__Reporting Incidents__**\n\nIf you see someone breaking our rules, please send a direct message to <@690631795473121280> or <@575252669443211264> to help assist you with the situation. If it's really urgent, you can also ping the <@&794401582514962473> role in the channel where the incident is taking place.\n\nIf you've received an infraction and would like to appeal it, you can either contact <@690631795473121280>, <@575252669443211264>, or the <@&794401582514962473> team and we will try our best to be of assistance.",
+        description=f"Not having read the rules will lead to punishment, and is no excuse.\n\nMisbehaving, rule-avoiding, and loopholing will lead to punishment. Punishments in this server vary from action to action. Once you've agreed with the rules, type *+agree* in the <#784967488139558942> channel but, **__try to evade them and you will not succeed.__**\n\n**__Privacy Notice__**\n\nBy speaking and remaining a member of this server, you acknowledge our tracking on some on your actions, such as message deletions, edits, and voice channel activity to aid in the moderation of this place. All this data is collected by an external service (<@242730576195354624>) which stores the information securely.\n\n**__Reporting Incidents__**\n\nIf you see someone breaking our rules, please send a direct message to <@690631795473121280> or <@575252669443211264> to help assist you with the situation. If it's really urgent, you can also ping the <@&794401582514962473> role in the channel where the incident is taking place.\n\nIf you've received an infraction and would like to appeal it, you can either contact <@690631795473121280>, <@575252669443211264>, or the <@&794401582514962473> team and we will try our best to be of assistance.",
         color=0xd9c2ae
         )
     await ctx.send(embed=embed)

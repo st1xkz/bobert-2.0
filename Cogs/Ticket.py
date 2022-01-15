@@ -8,19 +8,19 @@ from datetime import datetime
 class Ticket(commands.Cog):
     def __init__(self, client):
         self.client = client
+
         self.client.ticket_configs = {}
 
     @commands.Cog.listener()
     async def on_ready(self):
-        for file in ['ticket_configs.txt']:
-            async with aiofiles.open(file, mode="a") as temp:
-                pass
+        async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
+            pass
 
         async with aiofiles.open("ticket_configs.txt", mode="r") as file:
             lines = await file.readlines()
             for line in lines:
                 data = line.split(" ")
-                self.client.ticket_configs[int(data[0])] = [int(data[1]) + int(data[2]) + int(data[3])]
+                self.client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
@@ -36,7 +36,7 @@ class Ticket(commands.Cog):
 
                 channel = guild.get_channel(channel_id)
 
-                ticket_channel = await category.create_text_channel(f"ticket-{payload.member.name}", topic=f"A ticket for {payload.member.name}#{payload.member.discriminator}.", permission_synced=True)
+                ticket_channel = await category.create_text_channel(f"ticket-{payload.member.display_name}", topic=f"A ticket for {payload.member.display_name}.", permission_synced=True)
                 
                 await ticket_channel.set_permissions(payload.member, read_messages=True, send_messages=True)
 

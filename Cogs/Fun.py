@@ -10,9 +10,7 @@ import asyncio
 import typing
 import emoji
 from pyfiglet import Figlet
-from Imps import text_to_owo
-from Advice import responses
-from Sites import sites
+from imports import *
 import io
 import aiohttp
 

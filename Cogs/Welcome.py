@@ -3,7 +3,7 @@ from discord.ext import commands
 
 import random
 from discord.utils import get
-from Langs import langs
+from imports import *
 from datetime import datetime
 
 class Welcome(commands.Cog):
