@@ -1,8 +1,8 @@
+import discord
 from discord.ext import commands
 
 import asyncio
 import random
-
 
 class Games(commands.Cog):
     def __init__(self, client):
@@ -11,14 +11,10 @@ class Games(commands.Cog):
     @commands.command(name='2048', help="Starts a 2048 game")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def twentyfortyeight(self, ctx):
-        print(
-            f"{ctx.guild.name} - #{ctx.channel.name} - {ctx.author.name} - {ctx.message.content}"
-        )
+        print(f"{ctx.guild.name} - #{ctx.channel.name} - {ctx.author.name} - {ctx.message.content}")
         available_commands = ['w', 'a', 's', 'd', 'end']
-        await ctx.send(
-            '2048 has started. Use `WASD` keys to move. Type "end" to end the game.'
-        )
-
+        await ctx.send('2048 has started. Use `WASD` keys to move. Type "end" to end the game.')
+        
         def moveNumbers(input, board):
             up = False
             down = False
@@ -65,8 +61,7 @@ class Games(commands.Cog):
                                     board[c][b] = board[a][b]
                                     board[a][b] = 0
                                     a = c
-                                elif board[c][b] == board[a][
-                                        b] and alreadyMoved[c][b] != True:
+                                elif board[c][b] == board[a][b] and alreadyMoved[c][b] != True:
                                     board[c][b] = board[c][b] * 2
                                     board[a][b] = 0
                                     alreadyMoved[c][b] = True
@@ -84,15 +79,14 @@ class Games(commands.Cog):
                                     board[a][c] = board[a][b]
                                     board[a][b] = 0
                                     b = c
-                                elif board[a][c] == board[a][
-                                        b] and alreadyMoved[a][c] != True:
+                                elif board[a][c] == board[a][b] and alreadyMoved[a][c] != True:
                                     board[a][c] = board[a][c] * 2
                                     board[a][b] = 0
                                     alreadyMoved[a][c] = True
                                     stop = True
                                 else:
                                     stop = True
-
+        
         end = False
         win = False
         start = True
@@ -115,59 +109,33 @@ class Games(commands.Cog):
                 for j in range(4):
                     if i == 0:
                         if j == 0:
-                            if board[i][j] == board[
-                                    i + 1][j] or board[i][j] == board[i][j +
-                                                                         1]:
+                            if board[i][j] == board[i + 1][j] or board[i][j] == board[i][j + 1]:
                                 canMove = True
                         elif j == 3:
-                            if board[i][j] == board[
-                                    i + 1][j] or board[i][j] == board[i][j -
-                                                                         1]:
-                                canMove = True
+                            if board[i][j] == board[i + 1][j] or board[i][j] == board[i][j - 1]:
+                                    canMove = True
                         else:
-                            if board[i][j] == board[
-                                    i + 1][j] or board[i][j] == board[i][
-                                        j + 1] or board[i][j] == board[i][j -
-                                                                          1]:
-                                canMove = True
+                            if board[i][j] == board[i + 1][j] or board[i][j] == board[i][j + 1] or board[i][j] == board[i][j - 1]:
+                                    canMove = True
                     elif i == 3:
                         if j == 0:
-                            if board[i][j] == board[
-                                    i - 1][j] or board[i][j] == board[i][j +
-                                                                         1]:
+                            if board[i][j] == board[i - 1][j] or board[i][j] == board[i][j + 1]:
                                 canMove = True
                         elif j == 3:
-                            if board[i][j] == board[
-                                    i - 1][j] or board[i][j] == board[i][j -
-                                                                         1]:
+                            if board[i][j] == board[i - 1][j] or board[i][j] == board[i][j - 1]:
                                 canMove = True
                         else:
-                            if board[i][j] == board[i][
-                                    j + 1] or board[i][j] == board[
-                                        i -
-                                        1][j] or board[i][j] == board[i][j -
-                                                                         1]:
+                            if board[i][j] == board[i][j + 1] or board[i][j] == board[i - 1][j] or board[i][j] == board[i][j - 1]:
                                 canMove = True
                     else:
                         if j == 0:
-                            if board[i][j] == board[
-                                    i - 1][j] or board[i][j] == board[i][
-                                        j + 1] or board[i][j] == board[i +
-                                                                       1][j]:
+                            if board[i][j] == board[i - 1][j] or board[i][j] == board[i][j + 1] or board[i][j] == board[i + 1][j]:
                                 canMove = True
                         elif j == 3:
-                            if board[i][j] == board[
-                                    i - 1][j] or board[i][j] == board[i][
-                                        j - 1] or board[i][j] == board[i +
-                                                                       1][j]:
+                            if board[i][j] == board[i - 1][j] or board[i][j] == board[i][j - 1] or board[i][j] == board[i + 1][j]:
                                 canMove = True
                         else:
-                            if board[i][j] == board[i][
-                                    j + 1] or board[i][j] == board[
-                                        i - 1][j] or board[i][j] == board[i][
-                                            j -
-                                            1] or board[i][j] == board[i +
-                                                                       1][j]:
+                            if board[i][j] == board[i][j + 1] or board[i][j] == board[i - 1][j] or board[i][j] == board[i][j - 1] or board[i][j] == board[i + 1][j]:
                                 canMove = True
                     if board[i][j] == 2048:
                         win = True
@@ -189,7 +157,7 @@ class Games(commands.Cog):
             if start:
                 msg2 = await ctx.send(out)
             else:
-                await msg2.edit(content=out)
+                await msg2.edit(content = out)
             if win:
                 await ctx.send('You won!')
                 self.add_xp(ctx.author.id, 10)
@@ -202,11 +170,9 @@ class Games(commands.Cog):
             valid = False
             while not valid:
                 try:
-                    msg = await self.client.wait_for('message', timeout=600)
+                    msg = await self.client.wait_for('message', timeout = 600)
                 except asyncio.TimeoutError:
-                    await ctx.reply(
-                        '2048 has been timed out due to **10 minutes** of inactivity.'
-                    )
+                    await ctx.reply('2048 has been timed out due to **10 minutes** of inactivity.')
                     return
                 if msg.channel == ctx.channel and msg.author == ctx.author:
                     if msg.content in available_commands:
@@ -227,8 +193,7 @@ class Games(commands.Cog):
 
             if board != board2 and empty != 0:
                 pos = random.randint(0, empty - 1)
-                board[emptyX[pos]][emptyY[pos]] = 2 + (random.randint(0, 1) *
-                                                       2)
+                board[emptyX[pos]][emptyY[pos]] = 2 + (random.randint(0, 1) * 2)
                 counter += 1
             empty = 0
             emptyX = []
@@ -238,10 +203,6 @@ class Games(commands.Cog):
     @twentyfortyeight.error
     async def twentyfortyeight_error(self, ctx, error):
         await ctx.send(error)
-
-
-# END OF 2048 GAME
-
 
 def setup(client):
     client.add_cog(Games(client))
