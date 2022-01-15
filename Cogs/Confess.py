@@ -25,7 +25,9 @@ class Confess(commands.Cog):
                 color=0x2f3136)
             embed.set_footer(text="Confessions")
             await message.channel.send(embed=embed, delete_after=1)
+
             channel = self.client.get_channel(806649874379964487)
+
             embed = discord.Embed(title="Confession",
                                   description=f"{message.content}",
                                   color=discord.Colour.random())
@@ -36,17 +38,11 @@ class Confess(commands.Cog):
                 description=
                 f"**Message deleted in <#806649868314869760>** \n{message.content}",
                 color=0xFF4040)
-            embed.set_author(name=message.author.display_name + " " + "(" +
-                             str(message.author) + ")",
-                             icon_url=message.author.avatar_url)
-            embed.set_footer(
-                text=f"Author: {message.author.id} | Message: {message.id}")
+            embed.set_author(name=message.author.display_name + " " + "(" + str(message.author) + ")", icon_url=message.author.avatar_url)
+            embed.set_footer(text=f"Author: {message.author.id} | Message: {message.id}")
             await log_channel.send(embed=embed)
 
-    @commands.command(
-        help=
-        "Sends user's confession to the <#806649874379964487> channel through DMs"
-    )
+    @commands.command(help="Sends user's confession to the <#806649874379964487> channel through DMs")
     @commands.cooldown(1, 300, commands.BucketType.user)
     async def confess(self, ctx):
         if ctx.channel.type == discord.ChannelType.private:
@@ -71,9 +67,7 @@ class Confess(commands.Cog):
                 if msg:
                     channel = get(self.client.get_all_channels(),
                                   name="﹕confessions")
-                    embed = discord.Embed(title="Confession",
-                                          description=f"{msg.content}",
-                                          color=discord.Colour.random())
+                    embed = discord.Embed(title="Confession", description=f"{msg.content}", color=discord.Colour.random())
                     embed.set_footer(text="All confessions are anonymous.")
                     await channel.send(embed=embed)
                     await demand.delete()
@@ -82,12 +76,8 @@ class Confess(commands.Cog):
                         description=
                         f"**Message deleted in DMs** \n{msg.content}",
                         color=0xFF4040)
-                    embed.set_author(name=ctx.author.display_name + " " + "(" +
-                                     str(ctx.author) + ")",
-                                     icon_url=ctx.author.avatar_url)
-                    embed.set_footer(
-                        text=
-                        f"Author: {ctx.author.id} | Message: {ctx.message.id}")
+                    embed.set_author(name=ctx.author.display_name + " " + "(" + str(ctx.author) + ")", icon_url=ctx.author.avatar_url)
+                    embed.set_footer(text=f"Author: {ctx.author.id} | Message: {ctx.message.id}")
                     await log_channel.send(embed=embed)
 
             except asyncio.TimeoutError:
@@ -97,8 +87,7 @@ class Confess(commands.Cog):
                 await demand.delete()
 
         else:
-            await ctx.send("🌿 This command can only be used in Direct Messages"
-                           )
+            await ctx.send("🌿 This command can only be used in Direct Messages")
 
 
 def setup(client):
