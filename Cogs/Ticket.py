@@ -9,7 +9,7 @@ from datetime import datetime
 class Ticket(commands.Cog):
     def __init__(self, client):
         self.client = client
-        
+
         self.client.ticket_configs = {}
 
     @commands.Cog.listener()
@@ -49,19 +49,23 @@ class Ticket(commands.Cog):
                     f"A ticket for {payload.member.name}#{payload.member.discriminator}.",
                     permission_synced=True)
 
-                await ticket_channel.set_permissions(payload.member, read_messages=True, send_messages=True)
+                await ticket_channel.set_permissions(payload.member,
+                                                     read_messages=True,
+                                                     send_messages=True)
 
                 message = await channel.fetch_message(msg_id)
                 await message.remove_reaction(payload.emoji, payload.member)
 
                 embed = discord.Embed(
                     title="Thanks for Requesting Support!",
-                    description=f"Hey {payload.member.display_name}, this is your ticket!",
+                    description=
+                    f"Hey {payload.member.display_name}, this is your ticket!",
                     color=payload.member.guild.me.color,
-                    timestamp=datetime.utcnow()
-                )
-                embed.set_footer(text="Type *close to close the ticket", icon_url=payload)
-                await ticket_channel.send(f"{payload.member.mention}", embed=embed)
+                    timestamp=datetime.utcnow())
+                embed.set_footer(text="Type *close to close the ticket",
+                                 icon_url=payload)
+                await ticket_channel.send(f"{payload.member.mention}",
+                                          embed=embed)
 
                 try:
                     await self.client.wait_for(
@@ -78,9 +82,14 @@ class Ticket(commands.Cog):
 
     @commands.command(aliases=['ctic'])
     @commands.is_owner()
-    async def configticket(self, ctx, msg: discord.Message = None, category: discord.CategoryChannel = None):
+    async def configticket(self,
+                           ctx,
+                           msg: discord.Message = None,
+                           category: discord.CategoryChannel = None):
         if msg is None or category is None:
-            await ctx.channel.send("Failed to configure the ticket as an argument was not given or was invalid.", delete_after=60)
+            await ctx.channel.send(
+                "Failed to configure the ticket as an argument was not given or was invalid.",
+                delete_after=60)
             return
 
         self.client.ticket_configs[ctx.guild.id] = [
@@ -99,7 +108,9 @@ class Ticket(commands.Cog):
                     await file.write(line)
 
         await msg.add_reaction("🎫")
-        await ctx.channel.send(f"✅ Successfully configured ticket system for **{ctx.guild.name}**.", delete_after=60)
+        await ctx.channel.send(
+            f"✅ Successfully configured ticket system for **{ctx.guild.name}**.",
+            delete_after=60)
 
     @commands.command(aliases=['tcon'])
     @commands.is_owner()
@@ -109,10 +120,14 @@ class Ticket(commands.Cog):
                 ctx.guild.id]
 
         except KeyError:
-            await ctx.channel.send("❌ You have not configured the ticket system yet.", delete_after=60)
+            await ctx.channel.send(
+                "❌ You have not configured the ticket system yet.",
+                delete_after=60)
 
         else:
-            embed = discord.Embed(title="Ticket System Configurations", color=discord.Color.green(), timestamp=datetime.utcnow())
+            embed = discord.Embed(title="Ticket System Configurations",
+                                  color=discord.Color.green(),
+                                  timestamp=datetime.utcnow())
             embed.description = f"**Reaction Message ID**: {msg_id}\n"
             embed.description += f"**Ticket Category ID**: {category_id}\n\n"
 
