@@ -36,21 +36,21 @@ class Ticket(commands.Cog):
 
                 channel = guild.get_channel(channel_id)
 
-                ticket_num = 1 if len(category.channels) == 0 else int(category.channels[-1].name.split("-")[1]) + 1
-                ticket_channel = await category.create_text_channel(f"ticket {ticket_num}", topic=f"A channel for ticket number {ticket_num}", permission_synced=True)
-
-                await ticket_channel.set_permissions(payload.member, read_message=True, send_messages=True)
+                ticket_channel = await category.create_text_channel(f"ticket-{payload.member.display_name}", topic=f"A ticket for {payload.member.display_name}.", permission_synced=True)
+                
+                await ticket_channel.set_permissions(payload.member, read_messages=True, send_messages=True)
 
                 message = await channel.fetch_message(msg_id)
                 await message.remove_reaction(payload.emoji, payload.member)
 
-                await ticket_channel.send(f"Thank you for creating a ticket {payload.member.mention}! Type `-close` to close your ticket when you're done.")
+                await ticket_channel.send(f"{payload.member.mention} Thank you for creating a ticket! Use **'?close'** to close your ticket.")
 
                 try:
-                    await self.client.wait_for("message", check=lambda m: m.channel == ticket_channel and m.author == payload.member and m.content == "-close", timeout=60.0)
+                    await self.client.wait_for("message", check=lambda m: m.channel == ticket_channel and m.author == payload.member and m.content == "?close", timeout=3600)
 
                 except asyncio.TimeoutError:
                     await ticket_channel.delete()
+
                 else:
                     await ticket_channel.delete()
 
