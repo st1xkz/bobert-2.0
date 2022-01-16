@@ -11,7 +11,7 @@ import aiohttp
 from io import BytesIO
 from PIL import Image
 
-class Utils(commands.Cog):
+class utils(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -243,4 +243,4 @@ class Utils(commands.Cog):
 
             
 def setup(client):
-    client.add_cog(Utils(client))
+    client.add_cog(utils(client))

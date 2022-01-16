@@ -5,7 +5,7 @@ import asyncio
 from discord.utils import get
 from datetime import datetime
 
-class Confess(commands.Cog):
+class confess(commands.Cog):
     def __init__(self, client: discord.ext.commands.Bot):
         self.client = client
 
@@ -72,4 +72,4 @@ class Confess(commands.Cog):
             
 
 def setup(client):
-    client.add_cog(Confess(client))
+    client.add_cog(confess(client))

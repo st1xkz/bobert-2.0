@@ -3,7 +3,7 @@ from discord.ext import commands
 
 import time
 
-class Mod(commands.Cog):
+class mod(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -109,4 +109,4 @@ class Mod(commands.Cog):
             await ctx.send(message, delete_after=5)
 
 def setup(client):
-    client.add_cog(Mod(client))
+    client.add_cog(mod(client))

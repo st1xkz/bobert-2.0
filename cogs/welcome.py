@@ -6,7 +6,7 @@ from discord.utils import get
 from imports import *
 from datetime import datetime
 
-class Welcome(commands.Cog):
+class welcome(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -34,4 +34,4 @@ class Welcome(commands.Cog):
         await member.send(embed=embed)
 
 def setup(client):
-    client.add_cog(Welcome(client))
+    client.add_cog(welcome(client))

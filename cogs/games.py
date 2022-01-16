@@ -4,7 +4,7 @@ from discord.ext import commands
 import asyncio
 import random
 
-class Games(commands.Cog):
+class games(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -205,4 +205,4 @@ class Games(commands.Cog):
         await ctx.send(error)
 
 def setup(client):
-    client.add_cog(Games(client))
+    client.add_cog(games(client))

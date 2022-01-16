@@ -58,7 +58,7 @@ def random_dm():
     ]
     return random.choice(messages)
 
-class Fun(commands.Cog):
+class fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -516,4 +516,4 @@ class Fun(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Fun(client))
+    client.add_cog(fun(client))
