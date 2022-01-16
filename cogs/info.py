@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from datetime import datetime
+from random import randint
 
 class info(commands.Cog):
     def __init__(self, client):
@@ -12,7 +13,7 @@ class info(commands.Cog):
     @commands.guild_only()
     async def membercount(self, ctx):
 	    a = ctx.guild.member_count
-	    embed = discord.Embed(title=f"members in {ctx.guild.name}", description=a, colour=discord.Colour.random())
+	    embed = discord.Embed(title=f"members in {ctx.guild.name}", description=a, color=randint(0, 0xffffff))
 	    await ctx.send(embed=embed)
 
     @membercount.error

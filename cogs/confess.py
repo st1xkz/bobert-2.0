@@ -4,6 +4,7 @@ from discord.ext import commands
 import asyncio
 from discord.utils import get
 from datetime import datetime
+from random import randint
 
 class confess(commands.Cog):
     def __init__(self, client: discord.ext.commands.Bot):
@@ -21,7 +22,7 @@ class confess(commands.Cog):
             embed.set_footer(text="Confessions")
             await message.channel.send(embed=embed, delete_after=1)
             channel = self.client.get_channel(806649874379964487)
-            embed = discord.Embed(title="Confession", description=f"{message.content}", color=discord.Colour.random())
+            embed = discord.Embed(title="Confession", description=f"{message.content}", color=randint(0, 0xffffff))
             embed.set_footer(text="All confessions are anonymous.")
             await channel.send(embed=embed)
             
@@ -53,7 +54,7 @@ class confess(commands.Cog):
                 )
                 if msg:
                     channel = get(self.client.get_all_channels(), name="﹕confessions")
-                    embed = discord.Embed(title="Confession", description=f"{msg.content}", color=discord.Colour.random())
+                    embed = discord.Embed(title="Confession", description=f"{msg.content}", color=randint(0, 0xffffff))
                     embed.set_footer(text="All confessions are anonymous.")
                     await channel.send(embed=embed)
                     await demand.delete()

@@ -13,6 +13,7 @@ from pyfiglet import Figlet
 from imports import *
 import io
 import aiohttp
+from random import randint
 
 fig = Figlet(font='standard')
 fig_small = Figlet(font='small')
@@ -161,7 +162,7 @@ class fun(commands.Cog):
         async with ctx.typing():
             embed = discord.Embed(
                 title=submission.title,
-                color=discord.Colour.random(),
+                color=randint(0, 0xffffff),
                 timestamp=datetime.utcnow()
             )
             embed.set_image(url=submission.url)
@@ -328,7 +329,7 @@ class fun(commands.Cog):
         embed = discord.Embed(
             title="Here's your useless website:",
             description=f"🌐 {randomsite}",
-            colour=discord.Colour.random()
+            color=randint(0, 0xffffff)
         )
         await ctx.send(embed=embed)
 

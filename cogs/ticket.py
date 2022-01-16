@@ -46,6 +46,17 @@ class ticket(commands.Cog):
 
         await send_ticket_embed.add_reaction('🎫')
 
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def close(self, ctx, mentioned_user):
+        mentioned_role = mentioned_user.strip('<@&>')
+        get_mentioned_role = [items.name for items in ctx.message.author.guild.roles if f'{items.id}' in
+                              f'{mentioned_role}']
+        get_role = discord.utils.get(ctx.message.author.guild.roles, name=f'{get_mentioned_role[0]}')
+
+        await get_role.delete(reason='Removed by command')
+        await ctx.message.channel.delete(reason=None)
+
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         if payload.member.id != self.client.user.id:
@@ -59,28 +70,29 @@ class ticket(commands.Cog):
                 if user_channel_id in items:
                     # get guild and roles
                     find_guild = discord.utils.find(lambda guild: guild.id == payload.guild_id, self.client.guilds)
-                    guild_roles = discord.utils.get(find_guild.roles, name=f"{payload.member.name}")
+                    guild_roles = discord.utils.get(find_guild.roles, name=f'{payload.member.name}')
 
                     if guild_roles is None:
                         # create new role
                         permissions = discord.Permissions(send_messages=True, read_messages=True)
-                        await find_guild.create_role(name=f"{payload.member.name}", permissions=permissions)
+                        await find_guild.create_role(name=f'{payload.member.name}', permissions=permissions)
 
                         # assign new role
-                        new_user_role = discord.utils.get(find_guild.role, name=f"{payload.member.name}")
+                        new_user_role = discord.utils.get(find_guild.roles, name=f'{payload.member.name}')
                         await payload.member.add_roles(new_user_role, reason=None, atomic=True)
 
-                        # overwrite role perms
-                        admin_role = discord.utils.get(find_guild.roles, name="Green")
+                        # overwrite role permissions
+                        admin_role = discord.utils.get(find_guild.roles, name='Admin')
 
-                        overwrite = {
+                        overwrites = {
                             find_guild.default_role: discord.PermissionOverwrite(read_messages=False),
                             new_user_role: discord.PermissionOverwrite(read_messages=True),
                             admin_role: discord.PermissionOverwrite(read_messages=True)
                         }
 
                         # create new channel
-                        create_channel = await find_guild.create_text_channel('😀', overwrite=overwrite)
+                        create_channel = await find_guild.create_text_channel(
+                            'ticket-{}'.format(new_user_role), topic=f"New ticket for {payload.member.name}#{payload.member.discriminator}\n\n**Staff Tip**: To close a ticket, use this format **close <user_role>**", overwrites=overwrites)
 
                         embed = discord.Embed(
                             title="Thanks for Requesting Support!",
@@ -88,7 +100,7 @@ class ticket(commands.Cog):
                             color=payload.member.guild.me.color,
                             timestamp=datetime.utcnow()
                         )
-                        embed.set_footer(text="Closes after a period of inactivity, or when you or a staff member type *close", icon_url=payload.member.avatar_url)
+                        embed.set_footer(text="Closes after a period of inactivity, or when a staff member types *close <@user_role>", icon_url=payload.member.avatar_url)
                         await create_channel.send(f"{payload.member.mention}", embed=embed)
 
 def setup(client):
