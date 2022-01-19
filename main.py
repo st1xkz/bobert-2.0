@@ -6,7 +6,7 @@ from keep_alive import keep_alive
 my_secret = os.environ['TOKEN']
 
 intents = discord.Intents().all()
-client = commands.Bot(command_prefix=commands.when_mentioned_or('*'), status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="getting rewritten in Hikari ❤️"), intents=intents)
+client = commands.Bot(command_prefix=commands.when_mentioned_or('*'), status=discord.Status.idle, activity=discord.Game(name='SLOWLY getting rewritten in Hikari ❤️'), intents=intents)
 client.help_command = commands.MinimalHelpCommand()
 
 @client.event
@@ -41,8 +41,6 @@ async def unload(ctx, extension):
 async def reload(ctx, extension):
     client.unload_extension(f"Cogs.{extension}")
     client.load_extension(f"Cogs.{extension}")
-
-
 
 
 # -------------------------
