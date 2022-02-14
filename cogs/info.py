@@ -1,19 +1,19 @@
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 
 from datetime import datetime
 from random import randint
 
 class info(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(aliases=['mc'], help="Displays how many members are in the server")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
     async def membercount(self, ctx):
 	    a = ctx.guild.member_count
-	    embed = discord.Embed(title=f"members in {ctx.guild.name}", description=a, color=randint(0, 0xffffff))
+	    embed = disnake.Embed(title=f"members in {ctx.guild.name}", description=a, color=randint(0, 0xffffff))
 	    await ctx.send(embed=embed)
 
     @membercount.error
@@ -25,7 +25,7 @@ class info(commands.Cog):
     @commands.command(aliases=['cetde'])
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def creationdate(self, ctx):
-        bot = self.client.get_user(836109275016462396)
+        bot = self.bot.get_user(836109275016462396)
         creationDate = bot.created_at.strftime("%a %#d %B %Y, %I:%M %p")
         await ctx.send(f"Creation Date: **{creationDate}**")
       
@@ -39,13 +39,13 @@ class info(commands.Cog):
         total_chan_and_cat = total_text_channels  + total_voice_channels + total_categories
         list_of_bots = [bot.mention for bot in ctx.guild.members if bot.bot]
       
-        embed = discord.Embed(
+        embed = disnake.Embed(
             color=0x2f3136,
             title='Server Information',
             description=str(ctx.guild.description),
             timestamp=datetime.utcnow()
         )
-        embed.set_thumbnail(url=f"{ctx.guild.icon_url}")
+        embed.set_thumbnail(url=f"{ctx.guild.icon.url}")
         embed.add_field(name='Name', value=f"{ctx.guild.name}")
         embed.add_field(name='Region', value=f"{ctx.guild.region}")
         embed.add_field(name='Owner', value=f"{ctx.guild.owner.mention}")
@@ -57,11 +57,11 @@ class info(commands.Cog):
         embed.add_field(name='Bots', value=', '.join(list_of_bots), inline=False)
         embed.add_field(name='Creation Date', value=ctx.guild.created_at.strftime(f"%a, %#d %B %Y @ %H:%M:%S %p"))
         embed.add_field(name='Verification Level', value=str(ctx.guild.verification_level))
-        embed.add_field(name='Default Message Notifications', value='All Messages' if ctx.guild.default_notifications is discord.NotificationLevel.all_messages else 'Only_mentions')
+        embed.add_field(name='Default Message Notifications', value='All Messages' if ctx.guild.default_notifications is disnake.NotificationLevel.all_messages else 'Only_mentions')
         embed.add_field(name='Explicit Content Filter', value=str(ctx.guild.explicit_content_filter))
         embed.add_field(name='Total Boosts', value=f"{ctx.guild.premium_subscription_count}")
         embed.add_field(name='Boost Tier', value=f"{ctx.guild.premium_tier}")
-        embed.set_footer(text=f'Guild ID: {ctx.message.guild.id}', icon_url=ctx.guild.icon_url)
+        embed.set_footer(text=f'Guild ID: {ctx.message.guild.id}', avatar_url=ctx.guild.icon.url)
         await ctx.send(embed=embed)
 
     @serverinfo.error
@@ -73,16 +73,16 @@ class info(commands.Cog):
     @commands.command(aliases=['user', 'whois'], help="Displays given users' info", usage="<@user/user_id>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
-    async def userinfo(self, ctx, *, member:discord.Member = None):
+    async def userinfo(self, ctx, *, member: disnake.Member = None):
         if member == None:
             member = ctx.message.author
             
-        embed=discord.Embed(
+        embed = disnake.Embed(
             title="User Information", 
             timestamp=datetime.utcnow(),
             colour=ctx.author.colour
         )
-        embed.set_thumbnail(url=member.avatar_url)
+        embed.set_thumbnail(url=member.avatar.url)
         embed.add_field(name="Name", value=member.name+"#"+member.discriminator)
         embed.add_field(name="Nickname", value=member.nick)
         embed.add_field(name="Bot?", value=member.bot)
@@ -97,7 +97,7 @@ class info(commands.Cog):
         embed.add_field(name="Status", value=member.status)
         embed.add_field(name="Activity", value=f"{str(member.activity.type).split('.')[-1].title() if member.activity else 'N/A'} {member.activity.name if member.activity else ''}")
         embed.add_field(name="Boosted", value=bool(member.premium_since))
-        embed.set_footer(text=f'Requested by {ctx.author}', icon_url=member.avatar_url)
+        embed.set_footer(text=f'Requested by {ctx.author}', avatar_url=member.avatar.url)
         await ctx.send(embed=embed)
         
     @userinfo.error
@@ -107,5 +107,5 @@ class info(commands.Cog):
         await ctx.send(message)
     
 
-def setup(client):
-    client.add_cog(info(client))
+def setup(bot):
+    bot.add_cog(info(bot))

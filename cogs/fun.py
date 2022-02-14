@@ -1,6 +1,6 @@
 import os
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 
 import praw
 import random
@@ -60,21 +60,37 @@ def random_dm():
     return random.choice(messages)
 
 class fun(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command(aliases=['rn'], help="Generates a random number with the specified length of digits")
+    async def randomnumber(self, ctx, *, digits:int=1):
+        number = ""
+        for i in range(digits):
+            number += str(random.randint(0, 9))
+        await ctx.send(number)
+
+    @commands.command(description="Puts words into other peoples mouth's", usage="<@member> <text>")
+    async def sudo(self, ctx, member: disnake.Member, *, text):
+        for k in await ctx.channel.webhooks():
+            if k.user == ctx.me:
+                await k.delete()
+        webhook = await ctx.channel.create_webhook(name=f"{member}")
+        
+        await webhook.send(text, username=member.name, avatar_url=member.avatar.url, allowed_mentions=discord.AllowedMentions(roles=False, users=False, everyone=False))
 
     @commands.command(help="Checks how cool someone is", usage="[@member]")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def cool(self, ctx, member: discord.Member = None):
+    async def cool(self, ctx, member: disnake.Member = None):
         if member:
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title="Cool Rate",
                 description=f"{member.mention}, you are **{random.randrange(101)}%** cool! 😎",
                 color=ctx.author.color
             )
             await ctx.send(embed=embed)
         else:
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title="Cool Rate",
                 description=f"{ctx.author.mention}, you are **{random.randrange(101)}%** cool! 😎",
                 color=ctx.author.color
@@ -83,16 +99,16 @@ class fun(commands.Cog):
 
     @commands.command(help="Checks how gay someone is", usage="[@member]")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def gay(self, ctx, member: discord.Member = None):
+    async def gay(self, ctx, member: disnake.Member = None):
         if member:    
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title="Gay Rate",
                 description=f"{member.mention}, you are **{random.randrange(101)}%** gay! 🏳️‍🌈",
                 color=ctx.author.color
             )
             await ctx.send(embed=embed)
         else:
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title="Gay Rate",
                 description=f"{ctx.author.mention}, you are **{random.randrange(101)}%** gay! 🏳️‍🌈",
                 color=ctx.author.color
@@ -101,18 +117,18 @@ class fun(commands.Cog):
 
     @commands.command(help="Checks the size of someone's pp", usage="[@member]")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def pp(self, ctx, member: discord.Member = None):  
+    async def pp(self, ctx, member: disnake.Member = None):  
         pp = ['8D', '8=D', '8==D', '8===D', '8====D', '8=====D', '8======D', '8=======D', '8========D', '8=========D', '8==========D', '8===========D', '8============D', '8=============D']
 
         if member:
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title=f"{member}'s pp:",
                 description=f"{random.choice(pp)}",
                 color=ctx.author.color
             )
             await ctx.send(embed=embed)
         else:
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title=f"Your pp:",
                 description=f"{random.choice(pp)}",
                 color=ctx.author.color
@@ -160,13 +176,13 @@ class fun(commands.Cog):
         for i in range(0, post_to_pick):
             submission = next(x for x in memes_submissions if not x.stickied)
         async with ctx.typing():
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title=submission.title,
                 color=randint(0, 0xffffff),
                 timestamp=datetime.utcnow()
             )
             embed.set_image(url=submission.url)
-            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+            embed.set_author(name=ctx.author, avatar_url=ctx.author.avatar.url)
             embed.set_footer(text="Here is your meme!")
             await ctx.send(embed=embed)
 
@@ -196,7 +212,7 @@ class fun(commands.Cog):
     async def dm(self, ctx, user_id=None, args=None):
         if user_id != None and args != None:
             try:
-                target = await self.client.fetch_user(user_id)
+                target = await self.bot.fetch_user(user_id)
                 await target.send(args)
 
                 await ctx.channel.send("Your message has been sent to the given user!")
@@ -261,16 +277,16 @@ class fun(commands.Cog):
     @commands.command(aliases=['ava'], help="Displays your/a user's profile picture", usage="[@user/user_id]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
-    async def avatar(self, ctx, *, member: discord.Member = None):
+    async def avatar(self, ctx, *, member: disnake.Member = None):
         if member is None:
             member = ctx.author
 
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title=f"{member}'s Avatar",
             color=0x000100,
             timestamp=datetime.utcnow()
         )
-        embed.set_image(url=member.avatar_url)
+        embed.set_image(url=member.avatar.url)
         await ctx.send(embed=embed)
 
     @avatar.error
@@ -281,7 +297,7 @@ class fun(commands.Cog):
      
     @commands.command(aliases=['jumbo'], help="Enlarges a specified emoji", usage="<emoji>")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def enlarge(self, ctx, emoji: typing.Union[discord.Emoji, discord.PartialEmoji, str]):
+    async def enlarge(self, ctx, emoji: typing.Union[disnake.Emoji, disnake.PartialEmoji, str]):
         if type(emoji) is str:
             emoji_id = ord(emoji[0])
             await ctx.send(f'https://twemoji.maxcdn.com/v/latest/72x72/{emoji_id:x}.png')
@@ -309,7 +325,7 @@ class fun(commands.Cog):
                 if response.status == 200:
                     data = await response.json()
                 async with ctx.typing():
-                    embed = discord.Embed(
+                    embed = disnake.Embed(
                         title=f"{animal.title()} Fact",
                         description=data["fact"],
                         colour=ctx.author.colour,
@@ -326,7 +342,7 @@ class fun(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def useless(self, ctx): 
         randomsite = random.choice(sites)  
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="Here's your useless website:",
             description=f"🌐 {randomsite}",
             color=randint(0, 0xffffff)
@@ -342,7 +358,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/facts/bird')
             factjson = await request2.json()
             
-        embed = discord.Embed(title="Have a cool bird!",colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a cool bird!",colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -355,7 +371,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/img/fox')
             factjson = await request2.json()
             
-        embed = discord.Embed(title="Have a cute fox!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a cute fox!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -368,7 +384,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/img/panda')
             factjson = await request2.json()
             
-        embed = discord.Embed(title="Have a nice panda!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a nice panda!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -381,7 +397,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/img/cat')
             factjson = await request2.json()
             
-        embed = discord.Embed(title="Have a cute cat!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a cute cat!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -394,7 +410,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/img/dog')
             factjson = await request2.json()
             
-        embed = discord.Embed(title="Have a cute dog!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a cute dog!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -407,7 +423,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/img/koala')
             factjson = await request2.json()
 
-        embed = discord.Embed(title="Have a cuddly koala!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a cuddly koala!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -420,7 +436,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/facts/kangaroo')
             factjson = await request2.json()
 
-        embed = discord.Embed(title="Have a nice kangaroo!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a nice kangaroo!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -433,7 +449,7 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/facts/raccoon')
             factjson = await request2.json()
 
-        embed = discord.Embed(title="Have a cool raccoon!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a cool raccoon!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
@@ -446,13 +462,13 @@ class fun(commands.Cog):
             request2 = await session.get('https://some-random-api.ml/img/red_panda')
             factjson = await request2.json()
 
-        embed = discord.Embed(title="Have a fluffy red panda!", colour=ctx.author.colour)
+        embed = disnake.Embed(title="Have a fluffy red panda!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
  
     @commands.command(name='hack', help="\"hacks\" a member")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def hacker_man(self, ctx, member: discord.Member):
+    async def hacker_man(self, ctx, member: disnake.Member):
         ran_sleep = random.uniform(1.75, 2.25)
         email, password = login_generator(member.name)
         friends = random.randint(0, 1)
@@ -516,5 +532,5 @@ class fun(commands.Cog):
         await ctx.send('The *totally* real and **dangerous** hack is complete.')
 
 
-def setup(client):
-    client.add_cog(fun(client))
+def setup(bot):
+    bot.add_cog(fun(bot))

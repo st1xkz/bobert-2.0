@@ -1,12 +1,11 @@
-import discord
-from discord.ext import commands
+from disnake.ext import commands
 
 import asyncio
 import random
 
 class games(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(name='2048', help="Starts a 2048 game")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -204,5 +203,5 @@ class games(commands.Cog):
     async def twentyfortyeight_error(self, ctx, error):
         await ctx.send(error)
 
-def setup(client):
-    client.add_cog(games(client))
+def setup(bot):
+    bot.add_cog(games(bot))

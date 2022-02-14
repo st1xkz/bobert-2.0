@@ -1,5 +1,5 @@
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 
 import os
 import googletrans
@@ -12,10 +12,10 @@ from io import BytesIO
 from PIL import Image
 
 class utils(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
-        self.client.ses = aiohttp.ClientSession()
+        self.bot.ses = aiohttp.ClientSession()
 
     @commands.command(aliases=['tr'], help="Translator. [Available languages](https://pastebin.com/6SPpG1ed)", usage="<language> <text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -58,7 +58,7 @@ class utils(commands.Cog):
         elif seconds > 7776000:
             await ctx.send("The maximum duration is 90 days.", delete_after=5)
         else:
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title="Reminder Set 🔔",
                 description=f"Alright {ctx.author.name}, your reminder for \"{reminder}\" has been set and will end in {counter}.",
                 color=ctx.author.color,
@@ -67,7 +67,7 @@ class utils(commands.Cog):
             await ctx.reply(embed=embed)
             await asyncio.sleep(seconds)
 
-            embed = discord.Embed(
+            embed = disnake.Embed(
                 title="Reminder 🔔",
                 description=f"Hi, you asked me to remind you about \"{reminder}\" {counter} ago.",
                 color=0x2f3136,
@@ -85,8 +85,8 @@ class utils(commands.Cog):
     @commands.command(aliases=['qu'], help="Quotes a users' message using the message ID and/or channel ID", usage="[channel_id]-<message_id>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
-    async def quote(self, ctx, msg: discord.Message):
-        embed = discord.Embed(
+    async def quote(self, ctx, msg: disnake.Message):
+        embed = disnake.Embed(
             title="Message Link",
             url=f"{msg.jump_url}",
             description=f">>> {msg.content}",
@@ -94,7 +94,7 @@ class utils(commands.Cog):
             timestamp=datetime.utcnow()
             )
         embed.set_author(name=str(msg.author), icon_url=msg.author.avatar_url)
-        embed.set_footer(text=f"Message quoted by {ctx.author}", icon_url=ctx.author.avatar_url)
+        embed.set_footer(text=f"Message quoted by {ctx.author}", avatar_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
     @quote.error
@@ -121,7 +121,7 @@ class utils(commands.Cog):
         else:
             await ctx.send('Please type a valid operation type.')
             return
-        embed = discord.Embed(
+        embed = disnake.Embed(
             title="Calculator",
             color=0xffffff
         )
@@ -129,7 +129,7 @@ class utils(commands.Cog):
         embed.add_field(name="Output", value=f"```cpp\n{solution}\n```", inline=False)
         await ctx.send(embed=embed)
         
-    @commands.command(pass_context=True, aliases=['color', 'gc'], help="Displays color of specified hex code (you can add up to 10)", usage="<hex_code>")
+    @commands.command(aliases=['color', 'gc'], help="Displays color of specified hex code (you can add up to 10)", usage="<hex_code>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def getcolor(self, ctx, *, colour_codes):
         colour_codes = colour_codes.split()
@@ -145,12 +145,12 @@ class utils(commands.Cog):
                 image.save(file, "PNG")
                 file.seek(0)
 
-                embed = discord.Embed(
+                embed = disnake.Embed(
                     title=f"Color {colour_code}",
                 color=0x2f3136,
                 timestamp=datetime.utcnow()
                 )
-                img = discord.File(file, "Color.png")
+                img = disnake.File(file, "Color.png")
                 embed.set_image(url="attachment://Color.png")
                 embed.set_footer(text=f"Requested by {ctx.author}")
                 await ctx.send(embed=embed, file=img)
@@ -159,7 +159,7 @@ class utils(commands.Cog):
     @commands.command(aliases=['ce'], help="Creates a custom emoji", usage="<media_file> <name>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def createemoji(self, ctx, url: str, *, name):
-        async with self.client.ses.get(url) as r:
+        async with self.bot.ses.get(url) as r:
             try:
                 if r.status in range(200, 299):
                     img = BytesIO(await r.read())
@@ -169,8 +169,8 @@ class utils(commands.Cog):
 
                 else:
                     await ctx.send(f"Error occurred when making request: {r.status}")
-            except discord.HTTPException:
-                embed = discord.Embed(
+            except disnake.HTTPException:
+                embed = disnake.Embed(
                     title="Something went wrong",
                     description="Please make sure you have no spaces when naming your emoji, you have the correct file link, and the file size isn't too big. You can upload your emoji up to 128x128 pixels (256kb) but Discord resizes it to 32x32.",
                     color=0xFF4040,
@@ -180,7 +180,7 @@ class utils(commands.Cog):
 
     @commands.command(aliases=['de'], help="Deletes specified emoji", usage="<emoji>")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def deleteemoji(self, ctx, emoji: discord.Emoji):
+    async def deleteemoji(self, ctx, emoji: disnake.Emoji):
         if ctx.author.guild_permissions.manage_emojis:
             await ctx.send(f"Successfully deleted emoji: {emoji}")
             await emoji.delete()
@@ -212,7 +212,7 @@ class utils(commands.Cog):
                 synlist = "None"
 
             async with ctx.typing():
-                embed = discord.Embed(
+                embed = disnake.Embed(
                         title=f"`{word.lower()}`",
                         color=ctx.author.color,
                         timestamp=datetime.utcnow()
@@ -226,7 +226,7 @@ class utils(commands.Cog):
 
     @commands.command(aliases=['cin'], help="Creates an invite from a specified channel or the current channel", usage="[<#channel_id/mention]")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def createinvite(self, ctx, channel: discord.TextChannel=None):
+    async def createinvite(self, ctx, channel: disnake.TextChannel=None):
         channel = channel or ctx.channel
         invite = await channel.create_invite(max_age=0, max_uses=0)
         message = await ctx.send("Creating your invite link...")
@@ -242,5 +242,5 @@ class utils(commands.Cog):
             return
 
             
-def setup(client):
-    client.add_cog(utils(client))
+def setup(bot):
+    bot.add_cog(utils(bot))

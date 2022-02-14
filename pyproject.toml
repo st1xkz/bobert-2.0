@@ -4,19 +4,21 @@ requires = ["poetry-core>=1.0.0"]
 
 [tool]
 [tool.poetry]
-authors = ["Your Name <you@example.com>"]
-description = ""
-name = "bob"
+authors = ["st1xkz"]
+description = "A personal bot made with Python (rewritten in hikari-py)"
+name = "bobert 2.0"
 version = "0.1.0"
+license = "BSD 3-Clause"
 [tool.poetry.dependencies]
 Flask = "^2.0.1"
 Pillow = "^8.4.0"
 "backports.zoneinfo" = "^0.2.1"
-discord = "^1.7.3"
 emoji = "^1.5.0"
 googletrans = "^3.1.0a0"
 praw = "^7.5.0"
 pyfiglet = "^0.8.post1"
 python = "^3.8"
-aiofiles = "^0.8.0"
+disnake = {git = "https://github.com/DisnakeDev/disnake"}
+aiohttp = "^3.8.1"
+python-dotenv = "^0.19.2"
 [tool.poetry.dev-dependencies]

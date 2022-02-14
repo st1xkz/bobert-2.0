@@ -1,20 +1,20 @@
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 
 import time
 
 class mod(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(help="Shows the bot's latency")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ping(self, ctx):
         start_time = time.time()
-        message = await ctx.send(f"Pong! 🏓 \nWs Latency: **{round(self.client.latency * 1000)}ms**")
+        message = await ctx.send(f"Pong! 🏓 \nWs Latency: **{round(self.bot.latency * 1000)}ms**")
         end_time = time.time()
 
-        await message.edit(content=f"Pong! 🏓 \nWS Latency: **{round(self.client.latency * 1000)}ms** \nAPI Latency: **{round((end_time - start_time) * 1000)}ms**")
+        await message.edit(content=f"Pong! 🏓 \nWS Latency: **{round(self.bot.latency * 1000)}ms** \nAPI Latency: **{round((end_time - start_time) * 1000)}ms**")
 
     @commands.command(aliases=['purge'], help="Deletes a certain number of messages (deletes 10 messages by default)", usage="<amount>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -32,7 +32,7 @@ class mod(commands.Cog):
     @commands.command(aliases=['lk'], help="Locks a channel", usage="<#channel>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.has_permissions(manage_channels=True)
-    async def lock(self, ctx, channel: discord.TextChannel):
+    async def lock(self, ctx, channel: disnake.TextChannel):
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
         await ctx.send(f"⚠️ {channel.mention} is now in lockdown.")
 
@@ -45,7 +45,7 @@ class mod(commands.Cog):
     @commands.command(aliases=['uk'], help="Unlocks a channel", usage="<#channel>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.has_permissions(manage_channels=True)
-    async def unlock(self, ctx, channel: discord.TextChannel):
+    async def unlock(self, ctx, channel: disnake.TextChannel):
         await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
         await ctx.send(f"⚠️ {channel.mention} has been unlocked.")
 
@@ -90,7 +90,7 @@ class mod(commands.Cog):
     @commands.command(help="Toggles commands", usage="<command>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def toggle(self, ctx, *, command):
-        command = self.client.get_command(command)
+        command = self.bot.get_command(command)
 
         if command is None:
             await ctx.send(f"No command called \"{command}\" found.")
@@ -108,5 +108,5 @@ class mod(commands.Cog):
             message = (f"🚫 This command requires you to have the `Administrator` permission to use it.")
             await ctx.send(message, delete_after=5)
 
-def setup(client):
-    client.add_cog(mod(client))
+def setup(bot):
+    bot.add_cog(mod(bot))
