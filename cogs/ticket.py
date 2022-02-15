@@ -41,7 +41,7 @@ class TicketButton(disnake.ui.View):
 
         if interaction.author.id in ticket_data["open_tickets"]:
             await interaction.response.send_message(
-                f"You already have an open ticket. Please close it before starting a new ticket",
+                f"You already have an open ticket! Please close the current one before starting another one.",
                 ephemeral=True,
             )
             return
@@ -115,7 +115,7 @@ class SupportModal(disnake.ui.Modal):
 
         embed = disnake.Embed(
             title=f"Thanks for Requesting Support!",
-            description=f"Hey {member.display_name}, this is your ticket! Please allow staff some time to read over your ticket summary and get back to you as soon as they can.\n\n**Remember:**\n • **No one** is obligated to answer you if they feel that you are trolling or misusing this ticket system.\n • **Make sure** to be as clear as possible when explaining and provide as many details as you can.\n • **Be patient** as we (staff members) have our own lives *outside of discord* and we tend to get busy most days. We are human, so you should treat us as such!\n\nAbusing/misusing this ticket system may result in punishment that varies from action to action.",
+            description=f"Hey {member.display_name}, this is your ticket! Please allow staff some time to read over your ticket summary and get back to you as soon as they can.\n\n**Remember:**\n • **No one** is obligated to answer you if they feel that you are trolling or misusing this ticket system.\n • **Make sure** to be as clear as possible when explaining and provide as many details as you can.\n • **Be patient** as we (staff members) have our own lives *outside of Discord* and we tend to get busy most days. We are human, so you should treat us as such!\n\nAbusing/misusing this ticket system may result in punishment that varies from action to action.",
             color=member.guild.me.color,
             timestamp=datetime.utcnow()
         )
@@ -198,7 +198,7 @@ class CloseTicket(disnake.ui.View):
 
             embed = disnake.Embed(
                 title=f"Support thread closed",
-                description=f"""Your support thread has been closed.\nIf your question has not been answered or your issue is not resolved, please create a new support ticket in <#932032146397351967>.""",
+                description=f"Your support thread has been closed.\nIf your question has not been answered or your issue is not resolved, please create a new support ticket in <#825445726783668234>.",
                 color=0x2f3136,
                 timestamp=datetime.utcnow()
             )
@@ -208,7 +208,7 @@ class CloseTicket(disnake.ui.View):
 
             await self.member.send(embed=embed)
             await inter.response.send_message(
-                "This support thread has been closed. If your question has not been answered or your issue not resolved, please create a new support ticket in <#932032146397351967>."
+                "This support thread has been closed. If your question has not been answered or your issue not resolved, please create a new support ticket in <#825445726783668234>."
             )
             await self.thread.edit(archived=True)
             # disable button after click
@@ -227,6 +227,7 @@ class CloseTicket(disnake.ui.View):
             )
             embed.set_author(name=f"{inter.author}", icon_url=inter.author.display_avatar.url)
             embed.add_field(name="Conversation", value=f"[{self.thread.name}](https://discordapp.com/channels/{inter.guild.id}/{self.thread.id})")
+            embed.set_footer(text=f"User ID: {inter.author.id}")
             await log_channel.send(embed=embed)
 
 class Ticket(commands.Cog):
@@ -286,7 +287,7 @@ class Ticket(commands.Cog):
                         )
                     elif embed is None:
                         await channel.send(
-                            'No supported file was uploaded.', delete_after=10
+                            "No supported file was uploaded.", delete_after=10
                             )
                     else:
                         await channel.send(embed=embed, view=TicketButton(self.bot))
@@ -302,12 +303,12 @@ class Ticket(commands.Cog):
                     embed = await check_attachments(message)
 
                     if msg == 'Error':
-                        await channel.send(f'No channel with that ID was found', delete_after=5)
+                        await channel.send(f"No channel with that ID was found", delete_after=10)
                     else:
                         if embed is None:
-                            await channel.send('No supported file was uploaded.', delete_after=5)
+                            await channel.send("No supported file was uploaded.", delete_after=10)
                         elif embed == 'Error':
-                            await channel.send('Please check the sample.json for formatting issues.', delete_after=5)
+                            await channel.send("Please check the sample.json for formatting issues.", delete_after=10)
                         else:
                             await msg.edit(content=None, embed=embed)
                     await message.delete()
@@ -322,10 +323,10 @@ class Ticket(commands.Cog):
         admin_role = guild.get_role(config.ADMIN_ROLE)
 
         if member == owner or admin_role in member.roles:
-            await ctx.send(f'Check your DM for the sample file.', delete_after=10)
+            await ctx.send(f"Check your DM for the sample file.", delete_after=10)
             await member.send(file=disnake.File('./sample.json'))
         else:
-            await ctx.send(f'You do not have permission to use this command.', delete_after=10)
+            await ctx.send(f"You do not have permission to use this command.", delete_after=10)
 
 
 def setup(bot):
