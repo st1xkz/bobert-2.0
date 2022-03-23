@@ -3,12 +3,10 @@ import disnake
 from disnake.ext import commands
 from keep_alive import keep_alive
 
-from core import config
-
 my_secret = os.environ['TOKEN']
 
 intents = disnake.Intents().all()
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('*'), status=disnake.Status.idle, activity=disnake.Game(name='SLOWLY getting rewritten in Hikari ❤️'), case_sensitive=True, intents=intents)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('*'), status=disnake.Status.idle, activity=disnake.Game(name='SLOWLY getting rewritten in Hikari ❤️'), intents=intents)
 bot.help_command = commands.MinimalHelpCommand()
 
 @bot.event
@@ -50,6 +48,7 @@ async def reload(ctx, extension):
 
 @bot.command()
 async def rules(ctx):
+    await ctx.message.delete()
     await ctx.send("https://cdn.discordapp.com/attachments/900458968588120154/916120630498299915/banner.png")
     embed = disnake.Embed(
         description="**__Welcome to Sage!__**\n\nFirst and foremost, be very welcome to this community! Make yourself at home, we don’t bite. :))\n\nBelow you will find some cards with a bunch of important information on them about the rules in here. Make sure you read all of them! ;)\n\n**__General Rules__**\n\nIn order for things to be kept civil and intact, we enforce the following:",
@@ -151,8 +150,8 @@ async def rules(ctx):
 # -------------------------------------
 
 @bot.command()
-@commands.is_owner()
 async def cl(ctx):
+    await ctx.message.delete()
     embed = disnake.Embed(
         title="↬ 𝐜𝐥𝐚𝐬𝐬𝐢𝐜𝐬",
         description="<:Carnelian:930323208299761665> ― <@&900810972665626655> \n<:GiantsOrange:930323381071527978> ― <@&900974678917660723> \n<:BananaYellow:930323642859008041> ― <@&900974872488996924> \n<:MayGreen:930323861164154981> ― <@&900975279546179584> \n<:BrandeisBlue:930324050302074880> ― <@&900975574942625812> \n<:PigmentBlue:930324540620419112> ― <@&901362959920541716> \n<:Grape:930324381639520266> ― <@&900975582626578442>",
@@ -162,8 +161,8 @@ async def cl(ctx):
     await ctx.send(embed=embed)
 
 @bot.command()
-@commands.is_owner()
 async def ps(ctx):
+    await ctx.message.delete()
     embed = disnake.Embed(
         title="↬ 𝐩𝐚𝐬𝐭𝐞𝐥𝐬",
         description="<:PastelRed:930262802571079740> ― <@&927730216502190090>\n<:CongoPink:930263463857635348> ― <@&927730535063760926>\n<:LightOrange:930264442585894982> ― <@&927731235042787369>\n<:VeryPaleYellow:930264608168607884> ― <@&927731254827290694>\n<:PastelYellow:930264794945159250> ― <@&927732145756184606>\n<:TeaGreen:930265184164012073> ― <@&927732779582652436>\n<:GrannySmithApple:930265369644498984> ― <@&927733066334634015>\n<:AeroBlue:930265983833243678> ― <@&927735721106743377>\n<:BlizzardBlue:930266881858891856> ― <@&927735736499863552>\n<:LightBlue:930267518080258078> ― <@&927735874945445919>\n<:PaleLavender:930268004837638204> ― <@&927736512819396631>\n<:Soap:930268226582093854> ― <@&927736793640620072>\n<:Wisteria:930268700773322762> ― <@&927737212789981224>",
@@ -174,23 +173,35 @@ async def ps(ctx):
 
 @bot.command()
 async def nn(ctx):
+    await ctx.message.delete()
     embed = disnake.Embed(
         title="↬ 𝐧𝐞𝐨𝐧𝐬",
         description="<:ElectricRed:937127075909873695> ―\n<:Red:937128993805725746> ―\n<:Coquelicot:937131406566514698> ―\n<:VividOrange:937132150845759529> ―\n<:MiddleYellow:937132738564223017> ―\n<:Yellow:937133280195641404> ―\n<:BrightGreen:937133888042569758> ―\n<:ElectricGreen:937134276602900502> ―\n<:Aqua:937134612918980648> ―\n<:Blue:937134949746749440> ―\n<:NeonBlue:937135237484412938> ―\n<:BrightPink:937135626187309087> ―\n<:ElectricPurple:937136102786097222> ―",
         color=0x0017ff
     )
-    embed.set_image(url="https://cdn.discordapp.com/attachments/900458968588120154/940282044800450621/neons.gif")
     await ctx.send(embed=embed)
 
 @bot.command()
-@commands.is_owner()
 async def dk(ctx):
+    await ctx.message.delete()
     embed = disnake.Embed(
         title="↬ 𝐝𝐚𝐫𝐤𝐬",
         description="<:DarkScarlet:937162768283471963> ―\n<:BloodRed:937163475929690194> ―\n<:Sepia:937163802586251345> ―\n<:Mahogany:937164841314058261> ―\n<:DarkYellow:937165319330488371> ―\n<:DarkGreen:937166100943228968> ―\n<:ForestGreen:937166983575773235> ―\n<:CatalinaBlue:937168789328494592> ―\n<:CosmicCobalt:937169717133717514> ―\n<:LapisLazuli:937170062920544296> ―\n<:CyberGrape:937173198821277697> ―\n<:AmericanPurple:937174190363115590> ―",
         color=0x540011
     )
     await ctx.send(embed=embed)
+
+@bot.command()
+async def notifs(ctx):
+    await ctx.message.delete()
+    embed = disnake.Embed(
+        title="Notifications",
+        description="updates (📰) - pings about updates relating to the server\nevents (🎊) - pings that notify you when we are hosting an event\nannouncements (📣) - pings that notify you when we make an announcement",
+        color=0xea4544
+    )
+    embed.set_image(url="https://cdn.discordapp.com/attachments/900458968588120154/947268239552045087/notifications.png")
+    await ctx.send(embed=embed)
+
 
 for filename in os.listdir("./cogs"): 
     if filename.endswith(".py"):

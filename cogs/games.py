@@ -3,6 +3,7 @@ from disnake.ext import commands
 import asyncio
 import random
 
+
 class games(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -169,7 +170,7 @@ class games(commands.Cog):
             valid = False
             while not valid:
                 try:
-                    msg = await self.client.wait_for('message', timeout = 600)
+                    msg = await self.bot.wait_for('message', timeout = 600)
                 except asyncio.TimeoutError:
                     await ctx.reply('2048 has been timed out due to **10 minutes** of inactivity.')
                     return
@@ -202,6 +203,7 @@ class games(commands.Cog):
     @twentyfortyeight.error
     async def twentyfortyeight_error(self, ctx, error):
         await ctx.send(error)
+
 
 def setup(bot):
     bot.add_cog(games(bot))

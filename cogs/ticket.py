@@ -9,6 +9,7 @@ from core import config
 from core.utils.db import get_ticket_data, update_ticket_data
 from core.utils.check import check_attachments, check_message
 
+
 class TicketButton(disnake.ui.View):
     def __init__(self, bot):
         super().__init__(timeout=None)
@@ -36,7 +37,7 @@ class TicketButton(disnake.ui.View):
     async def support_button(
         self, button: disnake.ui.Button, interaction: disnake.Interaction
     ):
-        # get open ticket list to check if member alredy has an open ticket
+        # get open ticket list to check if member already has an open ticket
         ticket_data = get_ticket_data()
 
         if interaction.author.id in ticket_data["open_tickets"]:
@@ -62,6 +63,7 @@ title - Modal window title
 custom_id - give the view a custom ID
 components - modal view components
 """
+
 
 class SupportModal(disnake.ui.Modal):
     def __init__(self, bot):
@@ -157,6 +159,7 @@ Close ticket interaction button view
 Params: thread, member
 """
 
+
 class CloseTicket(disnake.ui.View):
     def __init__(self, thread, member):
         super().__init__(timeout=None)
@@ -230,6 +233,7 @@ class CloseTicket(disnake.ui.View):
             embed.set_footer(text=f"User ID: {inter.author.id}")
             await log_channel.send(embed=embed)
 
+
 class Ticket(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -262,7 +266,7 @@ class Ticket(commands.Cog):
         help_channel = await self.bot.fetch_channel(config.HELP_CHANNEL)
 
         if channel == help_channel:
-            # auto delete the "new thead" message
+            # auto delete the "new thread" message
             if message.type == disnake.MessageType.thread_created:
                 await message.delete()
                 return

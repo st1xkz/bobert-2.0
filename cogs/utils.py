@@ -11,6 +11,7 @@ import aiohttp
 from io import BytesIO
 from PIL import Image
 
+
 class utils(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -29,6 +30,7 @@ class utils(commands.Cog):
         text_translated = translator.translate(text, dest=lang_to).text
         await ctx.send(text_translated)
 
+    
     @commands.command(case_insensitive=True, aliases = ['rem'], help="Sets a reminder", usage="<time> <reminder>")
     async def remind(self, ctx, time, *, reminder):
         print(time)
@@ -75,12 +77,14 @@ class utils(commands.Cog):
             )
             await ctx.author.send(embed=embed)
             return
+            
         
     @commands.command(pass_context=True, help="Displays text in code format", usage="<text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def code(self, ctx, *, msg):
         await ctx.message.delete()
         await ctx.send("```" + msg.replace("`", "") + "```")
+        
         
     @commands.command(aliases=['qu'], help="Quotes a users' message using the message ID and/or channel ID", usage="[channel_id]-<message_id>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -94,7 +98,7 @@ class utils(commands.Cog):
             timestamp=datetime.utcnow()
             )
         embed.set_author(name=str(msg.author), icon_url=msg.author.avatar_url)
-        embed.set_footer(text=f"Message quoted by {ctx.author}", avatar_url=ctx.author.avatar.url)
+        embed.set_footer(text=f"Message quoted by {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
     @quote.error
@@ -102,6 +106,7 @@ class utils(commands.Cog):
         if isinstance(error, commands.NoPrivateMessage):
             message = (f"🌿 This command cannot be used in Direct Messages")
         await ctx.send(message)
+        
 
     @commands.command(aliases=['calc'], help="Calculator (e.g. 2+2)", usage="<equation>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -128,6 +133,7 @@ class utils(commands.Cog):
         embed.add_field(name="Input", value=f"```cpp\n{expr}\n```")
         embed.add_field(name="Output", value=f"```cpp\n{solution}\n```", inline=False)
         await ctx.send(embed=embed)
+        
         
     @commands.command(aliases=['color', 'gc'], help="Displays color of specified hex code (you can add up to 10)", usage="<hex_code>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -156,6 +162,7 @@ class utils(commands.Cog):
                 await ctx.send(embed=embed, file=img)
             await asyncio.sleep(1)
 
+    
     @commands.command(aliases=['ce'], help="Creates a custom emoji", usage="<media_file> <name>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def createemoji(self, ctx, url: str, *, name):
@@ -178,6 +185,7 @@ class utils(commands.Cog):
                 )
                 await ctx.send(embed=embed)
 
+    
     @commands.command(aliases=['de'], help="Deletes specified emoji", usage="<emoji>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def deleteemoji(self, ctx, emoji: disnake.Emoji):
@@ -224,6 +232,7 @@ class utils(commands.Cog):
                 embed.set_footer(text=f"Oxford Dictionaries: definition for {word.lower()}")
                 await ctx.send(embed=embed)
 
+    
     @commands.command(aliases=['cin'], help="Creates an invite from a specified channel or the current channel", usage="[<#channel_id/mention]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def createinvite(self, ctx, channel: disnake.TextChannel=None):

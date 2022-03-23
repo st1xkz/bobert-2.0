@@ -6,7 +6,7 @@ requires = ["poetry-core>=1.0.0"]
 [tool.poetry]
 authors = ["st1xkz"]
 description = "A personal bot made with Python (rewritten in hikari-py)"
-name = "bobert 2.0"
+name = "bob"
 version = "0.1.0"
 license = "BSD 3-Clause"
 [tool.poetry.dependencies]
@@ -18,7 +18,7 @@ googletrans = "^3.1.0a0"
 praw = "^7.5.0"
 pyfiglet = "^0.8.post1"
 python = "^3.8"
-disnake = {git = "https://github.com/DisnakeDev/disnake"}
+disnake = {version = "^2.4.0", python = "~3.8"}
 aiohttp = "^3.8.1"
 python-dotenv = "^0.19.2"
 [tool.poetry.dev-dependencies]

@@ -6,6 +6,7 @@ from disnake.utils import get
 from datetime import datetime
 from random import randint
 
+
 class confess(commands.Cog):
     def __init__(self, bot: disnake.ext.commands.Bot):
         self.bot = bot
@@ -27,10 +28,11 @@ class confess(commands.Cog):
             await channel.send(embed=embed)
             
             embed = disnake.Embed(description=f"**Message deleted in <#806649868314869760>** \n{message.content}", color=0xFF4040)
-            embed.set_author(name=message.author.display_name + " " + "(" + str(message.author) + ")", avatar_url=message.author.avatar.url)
+            embed.set_author(name=message.author.display_name + " " + "(" + str(message.author) + ")", icon_url=message.author.avatar.url)
             embed.set_footer(text=f"Author: {message.author.id} | Message: {message.id}")
             await log_channel.send(embed=embed)
 
+    
     @commands.command(help="Sends user's confession to the <#806649874379964487> channel through DMs")
     @commands.cooldown(1, 300, commands.BucketType.user)
     async def confess(self, ctx):
@@ -60,7 +62,7 @@ class confess(commands.Cog):
                     await demand.delete()
 
                     embed = disnake.Embed(description=f"**Message deleted in DMs** \n{msg.content}", color=0xFF4040)
-                    embed.set_author(name=ctx.author.display_name + " " + "(" + str(ctx.author) + ")", avatar_url=ctx.author.avatar.url)
+                    embed.set_author(name=ctx.author.display_name + " " + "(" + str(ctx.author) + ")", icon_url=ctx.author.avatar.url)
                     embed.set_footer(text=f"Author: {ctx.author.id} | Message: {ctx.message.id}")
                     await log_channel.send(embed=embed)
             

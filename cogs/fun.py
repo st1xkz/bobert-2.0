@@ -15,6 +15,7 @@ import io
 import aiohttp
 from random import randint
 
+
 fig = Figlet(font='standard')
 fig_small = Figlet(font='small')
 
@@ -26,6 +27,7 @@ def to_ascii(_input, small=False):
     ascii_text = ascii_text.replace('```', '```')
     return'```\n' + ascii_text + '\n```'
 
+    
     # Returns the random email and password based on Discord member's name
 def login_generator(member):
     member = member.replace(" ", ".")
@@ -59,6 +61,7 @@ def random_dm():
     ]
     return random.choice(messages)
 
+
 class fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -70,6 +73,7 @@ class fun(commands.Cog):
             number += str(random.randint(0, 9))
         await ctx.send(number)
 
+    
     @commands.command(description="Puts words into other peoples mouth's", usage="<@member> <text>")
     async def sudo(self, ctx, member: disnake.Member, *, text):
         for k in await ctx.channel.webhooks():
@@ -77,8 +81,9 @@ class fun(commands.Cog):
                 await k.delete()
         webhook = await ctx.channel.create_webhook(name=f"{member}")
         
-        await webhook.send(text, username=member.name, avatar_url=member.avatar.url, allowed_mentions=discord.AllowedMentions(roles=False, users=False, everyone=False))
+        await webhook.send(text, username=member.name, avatar_url=member.avatar.url, allowed_mentions=disnake.AllowedMentions(roles=False, users=False, everyone=False))
 
+    
     @commands.command(help="Checks how cool someone is", usage="[@member]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cool(self, ctx, member: disnake.Member = None):
@@ -97,6 +102,7 @@ class fun(commands.Cog):
             )
             await ctx.send(embed=embed)
 
+    
     @commands.command(help="Checks how gay someone is", usage="[@member]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def gay(self, ctx, member: disnake.Member = None):
@@ -115,6 +121,7 @@ class fun(commands.Cog):
             )
             await ctx.send(embed=embed)
 
+    
     @commands.command(help="Checks the size of someone's pp", usage="[@member]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def pp(self, ctx, member: disnake.Member = None):  
@@ -135,6 +142,7 @@ class fun(commands.Cog):
             )
             await ctx.send(embed=embed)
 
+    
     @commands.command(name='ascii', help="Turns text to ascii", usage="<text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def _ascii(self, ctx, *, _input):
@@ -146,22 +154,26 @@ class fun(commands.Cog):
                 return
             await ctx.send(ascii_text)
 
+    
     @commands.command(name='8ball', help="Wisdom. Ask a question and the bot will give you an answer", usage="<question>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def _8ball(self, ctx, *, question):
         responses = ['It is certain.', 'It is decidedly so.', 'Without a doubt.', 'Yes – definitely.', 'You may rely on it.', 'As I see it, yes.', 'Most likely.', 'Outlook good.', 'Yes.', 'Signs point to yes.', 'Reply hazy, try again.', 'Ask again later.', 'Better not tell you now.', 'Cannot predict now.', 'Concentrate and ask again.', 'Don’t count on it.', 'My reply is no.', 'My sources say no.', 'Outlook not so good.', 'Very doubtful.']
         await ctx.send(f'{random.choice(responses)}')
 
+    
     @commands.command(help="Turns text to owo (e.g. hewwo)", usage="<text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def owo(self, ctx, *, sentence):
         await ctx.send(text_to_owo(sentence))
 
+    
     @commands.command(help="Don't be afraid to ask for advice!")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def advice(self, ctx):
         await ctx.send(f'{random.choice(responses)}')
 
+    
     @commands.command(help="Displays a random meme from Reddit")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def meme(self, ctx):
@@ -182,9 +194,10 @@ class fun(commands.Cog):
                 timestamp=datetime.utcnow()
             )
             embed.set_image(url=submission.url)
-            embed.set_author(name=ctx.author, avatar_url=ctx.author.avatar.url)
+            embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
             embed.set_footer(text="Here is your meme!")
             await ctx.send(embed=embed)
+
 
     @commands.command(help="Repeats given text for x amount of times", usage="<amount> <text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -192,6 +205,7 @@ class fun(commands.Cog):
         for i in range(amount):
             await ctx.send(content)
 
+    
     @commands.command(aliases=['mock', 'dr'], help="Mocks given text (e.g. HahAhA)", usage="<text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def drunkify(self, ctx, *, s):
@@ -206,6 +220,7 @@ class fun(commands.Cog):
             except Exception:
                 await ctx.reply(f"Something went wrong! The message may be too large or be malformed.")
 
+    
     @commands.command(help="DMs given user through the bot", usage="<user_id> <text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
@@ -229,6 +244,7 @@ class fun(commands.Cog):
             message = (f"🌿 This command cannot be used in Direct Messages")
         await ctx.send(message)
 
+    
     @commands.command(name='dmall', aliases=['dma'], help="DMs every user in the server through the bot", usage="<text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
@@ -248,6 +264,7 @@ class fun(commands.Cog):
         if isinstance(error, commands.NoPrivateMessage):
             message = (f"🌿 This command cannot be used in Direct Messages")
         await ctx.send(message)
+
     
     @commands.command(aliases=['roll'], help="Roll dices (e.g. 2d1)", usage="<dice>")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -261,6 +278,7 @@ class fun(commands.Cog):
         result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
         await ctx.send(f"🎲 **{rolls}** ({result})")
 
+    
     @commands.command(aliases=['cf'], help="Flip a coin!")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def coinflip(self, ctx):
@@ -268,12 +286,14 @@ class fun(commands.Cog):
         rancoin = random.choice(choices)
         await ctx.send(rancoin)
 
+    
     @commands.command(aliases=['rev'], help="Reverses text", usage="<text>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def reverse(self, ctx, *, text: str):
         t_rev = text[::-1].replace("@", "@\u200B").replace("&", "&\u200B")
         await ctx.send(t_rev)
-      
+
+
     @commands.command(aliases=['ava'], help="Displays your/a user's profile picture", usage="[@user/user_id]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
@@ -294,7 +314,8 @@ class fun(commands.Cog):
         if isinstance(error, commands.NoPrivateMessage):
             message = (f"🌿 This command cannot be used in Direct Messages")
         await ctx.send(message)
-     
+
+    
     @commands.command(aliases=['jumbo'], help="Enlarges a specified emoji", usage="<emoji>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def enlarge(self, ctx, emoji: typing.Union[disnake.Emoji, disnake.PartialEmoji, str]):
@@ -303,7 +324,8 @@ class fun(commands.Cog):
             await ctx.send(f'https://twemoji.maxcdn.com/v/latest/72x72/{emoji_id:x}.png')
         else:
             await ctx.send(emoji.url)
-      
+
+        
     @commands.command(aliases=['fact'], help="Random animal facts for dogs, cats, pandas, foxes, birds, and koalas", usage="<animal>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def animalfact(self, ctx, animal: str):
@@ -337,7 +359,8 @@ class fun(commands.Cog):
               
                     else:
                         await ctx.send(f"API returned a {response.status} status.")
-            
+
+        
     @commands.command(aliases=['uls'], help="Gives you a random/useless website")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def useless(self, ctx): 
@@ -349,6 +372,7 @@ class fun(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    
     @commands.command(help='Displays an image of a bird')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def bird(self, ctx):
@@ -362,6 +386,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(help='Displays an image of a fox')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def fox(self, ctx):
@@ -375,6 +400,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(help='Displays an image of a panda')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def panda(self, ctx):
@@ -388,6 +414,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(help='Displays an image of a cat')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cat(self, ctx):
@@ -401,6 +428,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(help='Displays an image of a dog')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def dog(self, ctx):
@@ -414,6 +442,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(help='Displays an image of a koala')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def koala(self, ctx):
@@ -427,6 +456,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(aliases=['kang'], help='Displays an image of a kangaroo')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def kangaroo(self, ctx):
@@ -440,6 +470,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(aliases=['rac'], help='Displays an image of a raccoon')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def raccoon(self, ctx):
@@ -453,6 +484,7 @@ class fun(commands.Cog):
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
 
+    
     @commands.command(name='redpanda', aliases=['rpan'], help='Displays an image of a red panda')
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def Red_panda(self, ctx):
@@ -465,7 +497,8 @@ class fun(commands.Cog):
         embed = disnake.Embed(title="Have a fluffy red panda!", colour=ctx.author.colour)
         embed.set_image(url=dogjson['link'])
         await ctx.send(embed=embed)
- 
+
+    
     @commands.command(name='hack', help="\"hacks\" a member")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hacker_man(self, ctx, member: disnake.Member):

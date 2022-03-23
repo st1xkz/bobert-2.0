@@ -6,6 +6,7 @@ from disnake.utils import get
 from imports import *
 from datetime import datetime
 
+
 class welcome(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -18,6 +19,7 @@ class welcome(commands.Cog):
                 channel = self.bot.get_channel(781422576660250637)
                 await channel.send(f"You made it {after.mention}! Welcome to **{after.guild.name}**, enjoy your stay 💚")
 
+    
     @commands.Cog.listener()
     async def on_member_join(self, member):
         print("Welcome message sent in DMs.")
@@ -32,6 +34,7 @@ class welcome(commands.Cog):
         embed.set_thumbnail(url=f"{member.guild.icon.url}")
         embed.set_footer(text="The highlighted text are hyperlinks and can be clicked/tapped.", icon_url=member.guild.icon.url)
         await member.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(welcome(bot))

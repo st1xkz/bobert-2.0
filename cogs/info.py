@@ -4,6 +4,7 @@ from disnake.ext import commands
 from datetime import datetime
 from random import randint
 
+
 class info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -22,13 +23,15 @@ class info(commands.Cog):
             message = (f"🌿 This command cannot be used in Direct Messages")
         await ctx.send(message)
 
+    
     @commands.command(aliases=['cetde'])
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def creationdate(self, ctx):
         bot = self.bot.get_user(836109275016462396)
         creationDate = bot.created_at.strftime("%a %#d %B %Y, %I:%M %p")
         await ctx.send(f"Creation Date: **{creationDate}**")
-      
+
+    
     @commands.command(aliases=['server', 'srv'], help="Displays server info")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
@@ -61,7 +64,7 @@ class info(commands.Cog):
         embed.add_field(name='Explicit Content Filter', value=str(ctx.guild.explicit_content_filter))
         embed.add_field(name='Total Boosts', value=f"{ctx.guild.premium_subscription_count}")
         embed.add_field(name='Boost Tier', value=f"{ctx.guild.premium_tier}")
-        embed.set_footer(text=f'Guild ID: {ctx.message.guild.id}', avatar_url=ctx.guild.icon.url)
+        embed.set_footer(text=f'Guild ID: {ctx.message.guild.id}', icon_url=ctx.guild.icon.url)
         await ctx.send(embed=embed)
 
     @serverinfo.error
@@ -70,6 +73,7 @@ class info(commands.Cog):
             message = (f"🌿 This command cannot be used in Direct Messages")
             await ctx.send(message)
 
+    
     @commands.command(aliases=['user', 'whois'], help="Displays given users' info", usage="<@user/user_id>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.guild_only()
@@ -97,7 +101,7 @@ class info(commands.Cog):
         embed.add_field(name="Status", value=member.status)
         embed.add_field(name="Activity", value=f"{str(member.activity.type).split('.')[-1].title() if member.activity else 'N/A'} {member.activity.name if member.activity else ''}")
         embed.add_field(name="Boosted", value=bool(member.premium_since))
-        embed.set_footer(text=f'Requested by {ctx.author}', avatar_url=member.avatar.url)
+        embed.set_footer(text=f'Requested by {ctx.author}', icon_url=member.avatar.url)
         await ctx.send(embed=embed)
         
     @userinfo.error
