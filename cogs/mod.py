@@ -12,13 +12,20 @@ class mod(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ping(self, ctx):
         start_time = time.time()
-        message = await ctx.send(f"Pong! 🏓 \nWs Latency: **{round(self.bot.latency * 1000)}ms**")
+        message = await ctx.send(
+            f"Pong! 🏓 \nWs Latency: **{round(self.bot.latency * 1000)}ms**"
+        )
         end_time = time.time()
 
-        await message.edit(content=f"Pong! 🏓 \nWS Latency: **{round(self.bot.latency * 1000)}ms** \nAPI Latency: **{round((end_time - start_time) * 1000)}ms**")
+        await message.edit(
+            content=f"Pong! 🏓 \nWS Latency: **{round(self.bot.latency * 1000)}ms** \nAPI Latency: **{round((end_time - start_time) * 1000)}ms**"
+        )
 
-    
-    @commands.command(aliases=['purge'], help="Deletes a certain number of messages (deletes 10 messages by default)", usage="<amount>")
+    @commands.command(
+        aliases=["purge"],
+        help="Deletes a certain number of messages (deletes 10 messages by default)",
+        usage="<amount>",
+    )
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=10):
@@ -28,11 +35,10 @@ class mod(commands.Cog):
     @clear.error
     async def clear_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            message = (f"🚫 This command requires you to either be an Admin or have the `Manage Messages` permission to use it.")
+            message = f"🚫 This command requires you to either be an Admin or have the `Manage Messages` permission to use it."
         await ctx.send(message, delete_after=5)
 
-    
-    @commands.command(aliases=['lk'], help="Locks a channel", usage="<#channel>")
+    @commands.command(aliases=["lk"], help="Locks a channel", usage="<#channel>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.has_permissions(manage_channels=True)
     async def lock(self, ctx, channel: disnake.TextChannel):
@@ -42,11 +48,10 @@ class mod(commands.Cog):
     @lock.error
     async def lock_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            message = (f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it.")
+            message = f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it."
             await ctx.send(message, delete_after=5)
 
-    
-    @commands.command(aliases=['uk'], help="Unlocks a channel", usage="<#channel>")
+    @commands.command(aliases=["uk"], help="Unlocks a channel", usage="<#channel>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.has_permissions(manage_channels=True)
     async def unlock(self, ctx, channel: disnake.TextChannel):
@@ -56,11 +61,10 @@ class mod(commands.Cog):
     @unlock.error
     async def unlock_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            message = (f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it.")
+            message = f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it."
         await ctx.send(message, delete_after=5)
 
-    
-    @commands.command(aliases=['sl'], help="Locks the entire server")
+    @commands.command(aliases=["sl"], help="Locks the entire server")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.has_permissions(manage_channels=True)
     async def serverlockdown(self, ctx):
@@ -73,11 +77,10 @@ class mod(commands.Cog):
     @serverlockdown.error
     async def serverlockdown_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            message = (f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it.")
+            message = f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it."
         await ctx.send(message, delete_after=5)
 
-    
-    @commands.command(aliases=['sul'], help="Unlocks the entire server")
+    @commands.command(aliases=["sul"], help="Unlocks the entire server")
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.has_permissions(manage_channels=True)
     async def serverunlock(self, ctx):
@@ -90,17 +93,16 @@ class mod(commands.Cog):
     @serverunlock.error
     async def serverunlock_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            message = (f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it.")
+            message = f"🚫 This command requires you to either be an Admin or have the `Manage Channels` permission to use it."
         await ctx.send(message, delete_after=5)
 
-    
     @commands.command(help="Toggles commands", usage="<command>")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def toggle(self, ctx, *, command):
         command = self.bot.get_command(command)
 
         if command is None:
-            await ctx.send(f"No command called \"{command}\" found.")
+            await ctx.send(f'No command called "{command}" found.')
 
         elif ctx.command == command:
             await ctx.send("This command cannot be disabled.")
@@ -112,7 +114,7 @@ class mod(commands.Cog):
     @toggle.error
     async def toggle_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            message = (f"🚫 This command requires you to have the `Administrator` permission to use it.")
+            message = f"🚫 This command requires you to have the `Administrator` permission to use it."
             await ctx.send(message, delete_after=5)
 
 

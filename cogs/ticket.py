@@ -48,6 +48,7 @@ class TicketButton(disnake.ui.View):
             return
         await interaction.response.send_modal(modal=SupportModal(self.bot))
 
+
 """
 Modal view (pop out window)
 Modal View components
@@ -119,12 +120,12 @@ class SupportModal(disnake.ui.Modal):
             title=f"Thanks for Requesting Support!",
             description=f"Hey {member.display_name}, this is your ticket! Please allow staff some time to read over your ticket summary and get back to you as soon as they can.\n\n**Remember:**\n • **No one** is obligated to answer you if they feel that you are trolling or misusing this ticket system.\n • **Make sure** to be as clear as possible when explaining and provide as many details as you can.\n • **Be patient** as we (staff members) have our own lives *outside of Discord* and we tend to get busy most days. We are human, so you should treat us as such!\n\nAbusing/misusing this ticket system may result in punishment that varies from action to action.",
             color=member.guild.me.color,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.utcnow(),
         )
         embed.add_field(name="Ticket Summary", value=ticket_summary, inline=False)
         embed.set_footer(
             text="This ticket may be closed at any time by you, an admin, or a staff member",
-            icon_url=member.display_avatar.url
+            icon_url=member.display_avatar.url,
         )
         # send message to new thread, add CloseTicket interaction view button
         # Params: new_thread, member
@@ -147,12 +148,16 @@ class SupportModal(disnake.ui.Modal):
         embed = disnake.Embed(
             description=f"{member.mention} has created a new support thread",
             color=member.color,
-            timestamp=datetime.utcnow()
+            timestamp=datetime.utcnow(),
         )
-        embed.add_field(name="Conversation", value=f"[{new_thread.name}](https://discordapp.com/channels/{guild.id}/{new_thread.id})")
+        embed.add_field(
+            name="Conversation",
+            value=f"[{new_thread.name}](https://discordapp.com/channels/{guild.id}/{new_thread.id})",
+        )
         embed.set_author(name=f"{member}", icon_url=member.display_avatar.url)
         embed.set_footer(text=f"User ID: {member.id}")
         await log_channel.send(embed=embed)
+
 
 """
 Close ticket interaction button view
@@ -202,10 +207,13 @@ class CloseTicket(disnake.ui.View):
             embed = disnake.Embed(
                 title=f"Support thread closed",
                 description=f"Your support thread has been closed.\nIf your question has not been answered or your issue is not resolved, please create a new support ticket in <#825445726783668234>.",
-                color=0x2f3136,
-                timestamp=datetime.utcnow()
+                color=0x2F3136,
+                timestamp=datetime.utcnow(),
             )
-            embed.add_field(name="Conversation", value=f"[Jump to thread!](https://discordapp.com/channels/{inter.guild.id}/{self.thread.id})")
+            embed.add_field(
+                name="Conversation",
+                value=f"[Jump to thread!](https://discordapp.com/channels/{inter.guild.id}/{self.thread.id})",
+            )
             if inter.guild.icon:
                 embed.set_thumbnail(url=inter.guild.icon.url)
 
@@ -226,10 +234,15 @@ class CloseTicket(disnake.ui.View):
             embed = disnake.Embed(
                 description=f"{inter.author.mention} has closed the support ticket named {self.thread.name}",
                 color=inter.author.color,
-                timestamp=datetime.utcnow()
+                timestamp=datetime.utcnow(),
             )
-            embed.set_author(name=f"{inter.author}", icon_url=inter.author.display_avatar.url)
-            embed.add_field(name="Conversation", value=f"[{self.thread.name}](https://discordapp.com/channels/{inter.guild.id}/{self.thread.id})")
+            embed.set_author(
+                name=f"{inter.author}", icon_url=inter.author.display_avatar.url
+            )
+            embed.add_field(
+                name="Conversation",
+                value=f"[{self.thread.name}](https://discordapp.com/channels/{inter.guild.id}/{self.thread.id})",
+            )
             embed.set_footer(text=f"User ID: {inter.author.id}")
             await log_channel.send(embed=embed)
 
@@ -292,7 +305,7 @@ class Ticket(commands.Cog):
                     elif embed is None:
                         await channel.send(
                             "No supported file was uploaded.", delete_after=10
-                            )
+                        )
                     else:
                         await channel.send(embed=embed, view=TicketButton(self.bot))
                     await message.delete()
@@ -306,20 +319,26 @@ class Ticket(commands.Cog):
                     msg = await check_message(message)
                     embed = await check_attachments(message)
 
-                    if msg == 'Error':
-                        await channel.send(f"No channel with that ID was found", delete_after=10)
+                    if msg == "Error":
+                        await channel.send(
+                            f"No channel with that ID was found", delete_after=10
+                        )
                     else:
                         if embed is None:
-                            await channel.send("No supported file was uploaded.", delete_after=10)
-                        elif embed == 'Error':
-                            await channel.send("Please check the sample.json for formatting issues.", delete_after=10)
+                            await channel.send(
+                                "No supported file was uploaded.", delete_after=10
+                            )
+                        elif embed == "Error":
+                            await channel.send(
+                                "Please check the sample.json for formatting issues.",
+                                delete_after=10,
+                            )
                         else:
                             await msg.edit(content=None, embed=embed)
                     await message.delete()
 
-
     # command for downloading sample.json - requires admin or owner
-    @commands.command(aliases=['sample', 's', 'json'])
+    @commands.command(aliases=["sample", "s", "json"])
     async def download_sample(self, ctx):
         guild = ctx.guild
         owner = guild.owner
@@ -328,9 +347,11 @@ class Ticket(commands.Cog):
 
         if member == owner or admin_role in member.roles:
             await ctx.send(f"Check your DM for the sample file.", delete_after=10)
-            await member.send(file=disnake.File('./sample.json'))
+            await member.send(file=disnake.File("./sample.json"))
         else:
-            await ctx.send(f"You do not have permission to use this command.", delete_after=10)
+            await ctx.send(
+                f"You do not have permission to use this command.", delete_after=10
+            )
 
 
 def setup(bot):

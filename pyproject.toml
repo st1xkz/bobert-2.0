@@ -21,4 +21,5 @@ python = "^3.8"
 disnake = {version = "^2.4.0", python = "~3.8"}
 aiohttp = "^3.8.1"
 python-dotenv = "^0.19.2"
+black = "^22.3.0"
 [tool.poetry.dev-dependencies]
